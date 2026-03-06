@@ -1,0 +1,2953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Heaven on Earth Quest, EOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #000000;
+  --deep: #050505;
+  --cosmos: #0a0a0a;
+  --nebula: #111111;
+  --violet: #1a1a1a;
+  --amethyst: #222222;
+  --lavender: #c8a96e;
+  --gold: #c8973a;
+  --gold-light: #e8c060;
+  --gold-pale: #f5e0a0;
+  --stardust: #f0e6cc;
+  --white: #fff8ee;
+  --glow: rgba(200, 151, 58, 0.15);
+  --glow-strong: rgba(200, 151, 58, 0.35);
+  --purple-glow: rgba(200, 151, 58, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--void);
+  color: var(--stardust);
+  font-family: 'Cormorant Garamond', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ========== STARS BACKGROUND ========== */
+.stars-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--particle-color, #e8c060);
+  animation: twinkle var(--dur, 3s) ease-in-out infinite var(--delay, 0s), float var(--float-dur, 8s) ease-in-out infinite var(--float-delay, 0s);
+}
+@keyframes float {
+  0%,100% { transform: translateY(0px) translateX(0px); }
+  33% { transform: translateY(var(--fy, -12px)) translateX(var(--fx, 6px)); }
+  66% { transform: translateY(var(--fy2, 8px)) translateX(var(--fx2, -4px)); }
+}
+@keyframes twinkle {
+  0%,100% { opacity: var(--min-op, 0.2); transform: scale(1); }
+  50% { opacity: var(--max-op, 0.9); transform: scale(1.3); }
+}
+.nebula-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 20%, rgba(200,151,58,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 85% 80%, rgba(200,151,58,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 30% at 50% 50%, rgba(200,151,58,0.03) 0%, transparent 60%);
+}
+
+/* ========== PAGES ========== */
+.page { 
+  display: none !important; 
+  position: relative; 
+  z-index: 1; 
+}
+.page.active { 
+  display: block !important; 
+}
+
+/* ========== LANDING PAGE ========== */
+#landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.cosmos-orb {
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #c084fc, #7b3fa0 40%, #2a1458 70%, #07050f);
+  box-shadow: 0 0 60px rgba(123,63,160,0.6), 0 0 120px rgba(123,63,160,0.3), inset 0 0 40px rgba(212,168,67,0.15);
+  margin: 0 auto 40px;
+  animation: orbPulse 4s ease-in-out infinite;
+  position: relative;
+}
+.cosmos-orb::before {
+  content: '✦';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  color: var(--gold-light);
+  text-shadow: 0 0 20px var(--gold);
+  animation: starSpin 12s linear infinite;
+}
+@keyframes orbPulse {
+  0%,100% { box-shadow: 0 0 60px rgba(123,63,160,0.6), 0 0 120px rgba(123,63,160,0.3); }
+  50% { box-shadow: 0 0 80px rgba(123,63,160,0.8), 0 0 160px rgba(123,63,160,0.5), 0 0 240px rgba(212,168,67,0.1); }
+}
+@keyframes starSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.eos-badge {
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+  opacity: 0.8;
+}
+
+.landing-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(28px, 5vw, 56px);
+  font-weight: 700;
+  line-height: 1.2;
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 40%, var(--lavender) 70%, var(--gold-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+  text-shadow: none;
+  filter: drop-shadow(0 0 30px rgba(212,168,67,0.3));
+}
+
+.landing-sub {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(14px, 2.5vw, 22px);
+  color: var(--lavender);
+  margin-bottom: 32px;
+  font-weight: 400;
+}
+
+.divider {
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 24px auto;
+}
+
+.landing-desc {
+  font-size: clamp(16px, 2vw, 20px);
+  font-style: italic;
+  color: var(--stardust);
+  max-width: 600px;
+  line-height: 1.8;
+  margin-bottom: 32px;
+  opacity: 0.9;
+}
+
+.price-crystal {
+  display: inline-block;
+  border: 1px solid rgba(212,168,67,0.4);
+  border-radius: 16px;
+  padding: 20px 40px;
+  margin-bottom: 32px;
+  background: rgba(212,168,67,0.05);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+.price-crystal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(212,168,67,0.1) 0%, transparent 50%);
+}
+.price-number {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 48px;
+  color: var(--gold-light);
+  display: block;
+}
+.price-note {
+  font-size: 13px;
+  color: var(--lavender);
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.payment-methods {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.pay-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid rgba(212,168,67,0.5);
+  background: rgba(212,168,67,0.08);
+  color: var(--gold-light);
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.pay-btn:hover {
+  background: rgba(212,168,67,0.18);
+  box-shadow: 0 0 20px rgba(212,168,67,0.2);
+  transform: translateY(-2px);
+}
+
+.cta-main {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto 16px;
+  padding: 18px 32px;
+  border-radius: 12px;
+  border: 1px solid var(--gold);
+  background: linear-gradient(135deg, rgba(212,168,67,0.2), rgba(123,63,160,0.3));
+  color: var(--gold-light);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.4s;
+  box-shadow: 0 0 30px rgba(212,168,67,0.15);
+  letter-spacing: 1px;
+}
+.cta-main:hover {
+  background: linear-gradient(135deg, rgba(212,168,67,0.35), rgba(123,63,160,0.5));
+  box-shadow: 0 0 50px rgba(212,168,67,0.3);
+  transform: translateY(-3px);
+}
+
+.payment-info {
+  background: rgba(10,5,30,0.7);
+  border: 1px solid rgba(212,168,67,0.2);
+  border-radius: 16px;
+  padding: 24px 32px;
+  max-width: 480px;
+  margin: 0 auto 32px;
+  text-align: left;
+}
+.payment-info h3 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 14px;
+  color: var(--gold);
+  margin-bottom: 16px;
+  text-align: center;
+  letter-spacing: 2px;
+}
+.payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(212,168,67,0.1);
+  font-size: 15px;
+}
+.payment-row:last-child { border-bottom: none; }
+.payment-label { color: var(--lavender); font-family: 'Raleway', sans-serif; font-size: 13px; }
+.payment-value {
+  color: var(--gold-light);
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.payment-value:hover { color: white; }
+
+.already-paid {
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  color: var(--lavender);
+  opacity: 0.7;
+  cursor: pointer;
+  text-decoration: underline;
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+}
+.already-paid:hover { opacity: 1; }
+
+.realm-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-width: 600px;
+  margin: 40px auto 0;
+}
+.realm-preview-item {
+  background: rgba(42,20,88,0.4);
+  border: 1px solid rgba(176,127,212,0.2);
+  border-radius: 12px;
+  padding: 16px 12px;
+  text-align: center;
+  transition: all 0.3s;
+}
+.realm-preview-item:hover {
+  border-color: rgba(212,168,67,0.4);
+  background: rgba(42,20,88,0.6);
+}
+.realm-icon { font-size: 28px; display: block; margin-bottom: 8px; }
+.realm-name { font-family: 'Raleway', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--lavender); }
+
+/* ========== PASSWORD PAGE ========== */
+#password-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.auth-card {
+  background: rgba(14,8,32,0.9);
+  border: 1px solid rgba(212,168,67,0.3);
+  border-radius: 24px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 440px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 80px rgba(42,20,88,0.5);
+  text-align: center;
+}
+
+.auth-orb {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--lavender), var(--violet), var(--deep));
+  box-shadow: 0 0 30px rgba(123,63,160,0.5);
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.auth-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 22px;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+}
+.auth-subtitle {
+  font-size: 15px;
+  color: var(--lavender);
+  font-style: italic;
+  margin-bottom: 32px;
+  opacity: 0.8;
+}
+
+.field-group { margin-bottom: 20px; text-align: left; }
+.field-label {
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+.field-input {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(7,5,15,0.8);
+  border: 1px solid rgba(176,127,212,0.3);
+  border-radius: 10px;
+  color: var(--white);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.field-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(212,168,67,0.15);
+}
+.field-input::placeholder { color: rgba(176,127,212,0.4); }
+
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--gold);
+  background: linear-gradient(135deg, rgba(212,168,67,0.2), rgba(123,63,160,0.3));
+  color: var(--gold-light);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 1px;
+  margin-top: 8px;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, rgba(212,168,67,0.35), rgba(123,63,160,0.5));
+  box-shadow: 0 0 30px rgba(212,168,67,0.25);
+  transform: translateY(-2px);
+}
+
+.error-msg {
+  color: #ff6b9d;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  margin-top: 12px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.error-msg.show { opacity: 1; }
+
+.auth-back {
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  color: var(--lavender);
+  opacity: 0.6;
+  cursor: pointer;
+  margin-top: 20px;
+  display: block;
+}
+.auth-back:hover { opacity: 1; }
+
+/* ========== DASHBOARD ========== */
+#dashboard {
+  min-height: 100vh;
+  padding: 0 0 80px;
+}
+
+.dash-header {
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(212,168,67,0.15);
+  background: rgba(7,5,15,0.8);
+  backdrop-filter: blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.dash-logo {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 16px;
+  color: var(--gold);
+}
+.dash-user {
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  color: var(--lavender);
+}
+.dash-logout {
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  color: var(--lavender);
+  opacity: 0.5;
+  cursor: pointer;
+  border: 1px solid rgba(176,127,212,0.3);
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: all 0.2s;
+}
+.dash-logout:hover { opacity: 1; border-color: var(--lavender); }
+
+.dash-hero {
+  text-align: center;
+  padding: 60px 20px 40px;
+}
+.dash-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(24px, 4vw, 42px);
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--lavender));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+.dash-welcome {
+  font-size: 18px;
+  font-style: italic;
+  color: var(--lavender);
+  opacity: 0.8;
+}
+
+.progress-overview {
+  max-width: 700px;
+  margin: 0 auto 48px;
+  padding: 0 20px;
+}
+.progress-bar-wrap {
+  background: rgba(42,20,88,0.3);
+  border: 1px solid rgba(212,168,67,0.2);
+  border-radius: 16px;
+  padding: 24px 28px;
+}
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+.progress-track {
+  background: rgba(7,5,15,0.6);
+  border-radius: 100px;
+  height: 8px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--amethyst), var(--gold));
+  transition: width 0.6s ease;
+  box-shadow: 0 0 10px rgba(212,168,67,0.4);
+}
+
+.realms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.realm-card {
+  background: rgba(14,8,32,0.7);
+  border: 1px solid rgba(176,127,212,0.2);
+  border-radius: 20px;
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+.realm-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 60%, rgba(212,168,67,0.05));
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.realm-card:hover {
+  border-color: rgba(212,168,67,0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(42,20,88,0.6);
+}
+.realm-card:hover::before { opacity: 1; }
+
+.realm-card-icon { font-size: 40px; margin-bottom: 12px; display: block; }
+.realm-card-num {
+  font-family: 'Raleway', sans-serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+.realm-card-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 18px;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+}
+.realm-card-goal {
+  font-size: 14px;
+  color: var(--lavender);
+  font-style: italic;
+  opacity: 0.8;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.realm-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.realm-progress-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(7,5,15,0.6);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.realm-progress-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--amethyst), var(--gold));
+  transition: width 0.6s ease;
+}
+.realm-progress-label {
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  color: var(--gold);
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+/* ========== REALM VIEW ========== */
+#realm-view {
+  min-height: 100vh;
+  padding: 0 0 80px;
+}
+
+.realm-header {
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid rgba(212,168,67,0.15);
+  background: rgba(7,5,15,0.85);
+  backdrop-filter: blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.back-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(212,168,67,0.3);
+  background: rgba(42,20,88,0.3);
+  color: var(--gold);
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.back-btn:hover { background: rgba(42,20,88,0.6); }
+.realm-header-info { flex: 1; }
+.realm-header-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 18px;
+  color: var(--gold-light);
+}
+.realm-header-progress {
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  color: var(--lavender);
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+.realm-content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.realm-intro {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.realm-intro-icon { font-size: 64px; display: block; margin-bottom: 16px; }
+.realm-intro-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(22px, 4vw, 36px);
+  color: var(--gold-light);
+  margin-bottom: 8px;
+}
+.realm-intro-goal {
+  font-size: 18px;
+  font-style: italic;
+  color: var(--lavender);
+  margin-bottom: 12px;
+}
+.realm-intro-desc {
+  font-size: 16px;
+  color: var(--stardust);
+  opacity: 0.7;
+  line-height: 1.8;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.task-list { display: flex; flex-direction: column; gap: 24px; }
+
+.task-card {
+  background: rgba(14,8,32,0.8);
+  border: 1px solid rgba(176,127,212,0.2);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+.task-card.completed { border-color: rgba(212,168,67,0.4); }
+
+.task-card-header {
+  padding: 20px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.task-card-header:hover { background: rgba(42,20,88,0.3); }
+
+.task-num {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(212,168,67,0.4);
+  background: rgba(42,20,88,0.5);
+  color: var(--gold);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.task-card.completed .task-num {
+  background: rgba(212,168,67,0.2);
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+
+.task-info { flex: 1; }
+.task-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 16px;
+  color: var(--stardust);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.task-card.completed .task-title { color: var(--gold-light); }
+.task-subtitle {
+  font-size: 14px;
+  color: var(--lavender);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.task-check {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(212,168,67,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.task-card.completed .task-check {
+  background: rgba(212,168,67,0.2);
+  border-color: var(--gold);
+}
+
+.task-body {
+  padding: 0 24px 24px;
+  display: none;
+}
+.task-body.open { display: block; }
+
+.task-section {
+  margin-bottom: 20px;
+}
+.task-section-label {
+  font-family: 'Raleway', sans-serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.7;
+  margin-bottom: 8px;
+}
+.task-section-text {
+  font-size: 15px;
+  color: var(--stardust);
+  line-height: 1.7;
+  opacity: 0.85;
+}
+
+.task-textarea {
+  width: 100%;
+  min-height: 100px;
+  background: rgba(7,5,15,0.8);
+  border: 1px solid rgba(176,127,212,0.25);
+  border-radius: 10px;
+  color: var(--white);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  padding: 14px 16px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.3s;
+  line-height: 1.6;
+}
+.task-textarea:focus {
+  border-color: rgba(212,168,67,0.5);
+  box-shadow: 0 0 15px rgba(212,168,67,0.1);
+}
+.task-textarea::placeholder { color: rgba(176,127,212,0.35); font-style: italic; }
+
+.task-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+.btn-save {
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: 1px solid rgba(212,168,67,0.5);
+  background: rgba(212,168,67,0.1);
+  color: var(--gold-light);
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+.btn-save:hover { background: rgba(212,168,67,0.2); }
+.btn-complete {
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: 1px solid rgba(123,63,160,0.5);
+  background: rgba(123,63,160,0.15);
+  color: var(--lavender);
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+.btn-complete:hover { background: rgba(123,63,160,0.3); }
+.task-card.completed .btn-complete {
+  border-color: rgba(212,168,67,0.5);
+  background: rgba(212,168,67,0.1);
+  color: var(--gold-light);
+}
+
+.media-suggestion {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: rgba(42,20,88,0.25);
+  border-left: 2px solid rgba(212,168,67,0.3);
+  border-radius: 0 8px 8px 0;
+  font-size: 13px;
+  color: var(--lavender);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* ========== SHOWCASE ========== */
+#showcase-view {
+  min-height: 100vh;
+  padding: 0 0 80px;
+}
+.showcase-content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+.showcase-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.showcase-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 28px;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+}
+.showcase-subtitle {
+  font-size: 16px;
+  font-style: italic;
+  color: var(--lavender);
+  opacity: 0.8;
+}
+
+.showcase-upload {
+  background: rgba(14,8,32,0.8);
+  border: 1px dashed rgba(212,168,67,0.3);
+  border-radius: 18px;
+  padding: 32px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+.showcase-upload-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 18px;
+  color: var(--gold-light);
+  margin-bottom: 12px;
+}
+.showcase-textarea {
+  width: 100%;
+  min-height: 120px;
+  background: rgba(7,5,15,0.8);
+  border: 1px solid rgba(176,127,212,0.25);
+  border-radius: 10px;
+  color: var(--white);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  padding: 14px 16px;
+  outline: none;
+  resize: vertical;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+.showcase-textarea::placeholder { color: rgba(176,127,212,0.35); font-style: italic; }
+.showcase-textarea:focus { border-color: rgba(212,168,67,0.5); }
+
+.submissions-grid { display: flex; flex-direction: column; gap: 16px; }
+.submission-card {
+  background: rgba(14,8,32,0.7);
+  border: 1px solid rgba(176,127,212,0.2);
+  border-radius: 16px;
+  padding: 24px;
+}
+.submission-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.submission-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--amethyst), var(--violet));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--gold-light);
+  font-family: 'Cinzel Decorative', serif;
+}
+.submission-name {
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lavender);
+}
+.submission-time {
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  color: var(--lavender);
+  opacity: 0.5;
+}
+.submission-text {
+  font-size: 15px;
+  color: var(--stardust);
+  line-height: 1.7;
+  opacity: 0.85;
+}
+
+/* ========== TOAST ========== */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: rgba(14,8,32,0.95);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  padding: 14px 20px;
+  color: var(--gold-light);
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  z-index: 9999;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.4s;
+  box-shadow: 0 0 30px rgba(212,168,67,0.2);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ========== COPY TOOLTIP ========== */
+.copied-tip {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: rgba(14,8,32,0.97);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  padding: 12px 24px;
+  color: var(--gold-light);
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.3s;
+  pointer-events: none;
+}
+.copied-tip.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+
+
+.realms-expanded {
+  max-width: 680px;
+  margin: 0 auto 8px;
+  padding: 0 20px;
+  text-align: center;
+}
+.realms-expanded-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(16px, 2.5vw, 22px);
+  color: var(--gold-light);
+  margin-bottom: 10px;
+}
+.realms-expanded-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--lavender);
+  opacity: 0.8;
+  margin-bottom: 28px;
+  line-height: 1.7;
+}
+.realms-expanded-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: left;
+}
+.realm-exp-card {
+  background: rgba(42,20,88,0.25);
+  border: 1px solid rgba(176,127,212,0.2);
+  border-radius: 16px;
+  padding: 20px 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: border-color 0.3s;
+}
+.realm-exp-card:hover { border-color: rgba(212,168,67,0.35); }
+.realm-exp-icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+.realm-exp-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 13px;
+  color: var(--gold-light);
+  margin-bottom: 6px;
+}
+.realm-exp-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: var(--stardust);
+  line-height: 1.7;
+  opacity: 0.82;
+}
+
+
+.realms-journey {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  text-align: left;
+  margin-top: 8px;
+}
+.realm-journey-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.realm-journey-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 48px;
+}
+.realm-journey-icon {
+  font-size: 32px;
+  display: block;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.realm-journey-line {
+  width: 1px;
+  flex: 1;
+  min-height: 40px;
+  background: linear-gradient(180deg, rgba(212,168,67,0.4), rgba(212,168,67,0.05));
+  margin-bottom: 6px;
+}
+.realm-journey-right {
+  padding-bottom: 32px;
+  flex: 1;
+}
+.realm-journey-num {
+  font-family: 'Raleway', sans-serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+.realm-journey-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 16px;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+}
+.realm-journey-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  color: var(--stardust);
+  line-height: 1.75;
+  opacity: 0.82;
+}
+
+
+.realms-prose {
+  max-width: 620px;
+  margin: 0 auto 8px;
+  padding: 0 24px;
+  text-align: left;
+}
+.realms-prose-intro {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(16px, 2vw, 19px);
+  font-style: italic;
+  color: var(--lavender);
+  text-align: center;
+  line-height: 1.8;
+  margin-bottom: 36px;
+  opacity: 0.85;
+}
+.realm-prose-item {
+  margin-bottom: 28px;
+  line-height: 1.85;
+}
+.realm-prose-icon {
+  font-size: 20px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.realm-prose-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 14px;
+  color: var(--gold-light);
+  margin-right: 6px;
+}
+.realm-prose-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(16px, 2vw, 18px);
+  color: var(--stardust);
+  opacity: 0.85;
+}
+
+.beacon-section {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 20px 20px;
+  text-align: center;
+}
+.beacon-eyebrow {
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+.beacon-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(17px, 3vw, 26px);
+  color: var(--gold-light);
+  line-height: 1.35;
+  margin-bottom: 20px;
+}
+.beacon-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(16px, 2vw, 19px);
+  color: var(--stardust);
+  line-height: 1.9;
+  opacity: 0.88;
+  margin-bottom: 40px;
+  font-style: italic;
+}
+.beacon-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 40px;
+  text-align: left;
+}
+.beacon-card {
+  background: rgba(42,20,88,0.3);
+  border: 1px solid rgba(212,168,67,0.15);
+  border-radius: 16px;
+  padding: 24px;
+  transition: border-color 0.3s;
+}
+.beacon-card:hover { border-color: rgba(212,168,67,0.35); }
+.beacon-card-icon {
+  font-size: 28px;
+  display: block;
+  margin-bottom: 10px;
+}
+.beacon-card-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 14px;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.beacon-card-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  color: var(--stardust);
+  line-height: 1.75;
+  opacity: 0.82;
+}
+.beacon-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(16px, 2.5vw, 21px);
+  font-style: italic;
+  color: var(--lavender);
+  line-height: 1.8;
+  padding: 24px 20px;
+  border-left: 2px solid var(--gold);
+  border-right: 2px solid var(--gold);
+  margin: 0 0 36px;
+  opacity: 0.9;
+}
+.beacon-eos {
+  text-align: center;
+  line-height: 2.2;
+  margin-bottom: 8px;
+}
+.beacon-eos-name {
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 4px;
+  font-family: 'Raleway', sans-serif;
+  text-transform: uppercase;
+}
+.beacon-eos-sub {
+  font-style: italic;
+  font-size: 15px;
+  color: var(--lavender);
+  opacity: 0.75;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+
+/* ========== READABILITY OVERRIDES ========== */
+body { font-size: 18px; }
+
+.landing-desc {
+  font-size: clamp(18px, 2.5vw, 22px) !important;
+  color: var(--white) !important;
+  opacity: 1 !important;
+  line-height: 2 !important;
+}
+.realm-card-goal { font-size: 15px !important; color: var(--stardust) !important; opacity: 1 !important; }
+.task-section-text { font-size: 17px !important; color: var(--white) !important; opacity: 1 !important; }
+.task-title { font-size: 17px !important; color: var(--white) !important; }
+.beacon-body { color: var(--white) !important; opacity: 1 !important; font-size: clamp(17px, 2.2vw, 21px) !important; }
+.beacon-card-text { font-size: 17px !important; color: var(--white) !important; opacity: 1 !important; }
+.beacon-quote { font-size: clamp(18px, 2.5vw, 23px) !important; color: var(--gold-pale) !important; opacity: 1 !important; }
+.realm-prose-text { font-size: clamp(17px, 2.2vw, 20px) !important; color: var(--white) !important; opacity: 1 !important; }
+.realm-prose-intro { font-size: clamp(17px, 2.2vw, 20px) !important; color: var(--stardust) !important; opacity: 1 !important; }
+.realm-journey-desc { font-size: 17px !important; color: var(--white) !important; opacity: 1 !important; }
+.submission-text { font-size: 16px !important; color: var(--white) !important; opacity: 1 !important; }
+.task-subtitle { color: var(--gold-light) !important; opacity: 1 !important; font-size: 15px !important; }
+.payment-label { font-size: 14px !important; color: var(--stardust) !important; opacity: 1 !important; }
+.price-note { font-size: 15px !important; color: var(--stardust) !important; opacity: 1 !important; }
+.auth-subtitle { font-size: 16px !important; color: var(--stardust) !important; opacity: 1 !important; }
+.dash-welcome { color: var(--stardust) !important; opacity: 1 !important; font-size: 19px !important; }
+.realm-card-goal { color: var(--stardust) !important; opacity: 1 !important; }
+.realm-intro-goal { font-size: 19px !important; color: var(--gold-light) !important; opacity: 1 !important; }
+
+/* ========== MUSIC PLAYER ========== */
+.music-player {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,0,0,0.85);
+  border: 1px solid rgba(200,151,58,0.4);
+  border-radius: 50px;
+  padding: 10px 18px 10px 12px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 30px rgba(200,151,58,0.15);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.music-player:hover { border-color: var(--gold); box-shadow: 0 0 40px rgba(200,151,58,0.25); }
+.music-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: rgba(200,151,58,0.15);
+  color: var(--gold-light);
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.music-btn:hover { background: rgba(200,151,58,0.3); }
+.music-label {
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+  white-space: nowrap;
+}
+.music-wave {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  height: 16px;
+}
+.music-wave span {
+  display: block;
+  width: 2px;
+  background: var(--gold);
+  border-radius: 2px;
+  animation: wave 1.2s ease-in-out infinite;
+  opacity: 0.6;
+}
+.music-wave span:nth-child(1) { height: 6px; animation-delay: 0s; }
+.music-wave span:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+.music-wave span:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+.music-wave span:nth-child(4) { height: 14px; animation-delay: 0.1s; }
+.music-wave span:nth-child(5) { height: 6px; animation-delay: 0.25s; }
+.music-wave.paused span { animation-play-state: paused; opacity: 0.3; }
+@keyframes wave {
+  0%,100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.3); }
+}
+
+
+/* ========== MUSIC PLAYER ========== */
+.music-widget {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: rgba(0,0,0,0.92);
+  border: 1px solid rgba(200,151,58,0.4);
+  border-radius: 60px;
+  padding: 10px 20px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 30px rgba(200,151,58,0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.4s;
+  max-width: 92vw;
+}
+.music-widget.expanded {
+  border-radius: 20px;
+  flex-wrap: wrap;
+  padding: 14px 20px;
+}
+.mw-play {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: rgba(200,151,58,0.12);
+  color: var(--gold-light);
+  font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.mw-play:hover { background: rgba(200,151,58,0.28); }
+.mw-title {
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 80px;
+}
+.mw-wave {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  height: 14px;
+}
+.mw-wave span {
+  display: block;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--gold);
+  opacity: 0.6;
+  animation: mwave 1.3s ease-in-out infinite;
+}
+.mw-wave span:nth-child(1){height:4px;animation-delay:0s}
+.mw-wave span:nth-child(2){height:10px;animation-delay:0.18s}
+.mw-wave span:nth-child(3){height:6px;animation-delay:0.36s}
+.mw-wave span:nth-child(4){height:12px;animation-delay:0.09s}
+.mw-wave span:nth-child(5){height:5px;animation-delay:0.27s}
+.mw-wave.paused span { animation-play-state: paused; opacity: 0.2; height: 3px !important; }
+@keyframes mwave { 0%,100%{transform:scaleY(1)}50%{transform:scaleY(0.25)} }
+.mw-menu-btn {
+  font-size: 16px;
+  color: var(--gold);
+  opacity: 0.5;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 2px 6px;
+  transition: opacity 0.2s;
+  user-select: none;
+}
+.mw-menu-btn:hover { opacity: 1; }
+.mw-tracklist {
+  display: none;
+  width: 100%;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(200,151,58,0.15);
+  margin-top: 4px;
+}
+.mw-tracklist.open { display: flex; }
+.mw-track-btn {
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.55;
+  cursor: pointer;
+  padding: 6px 4px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mw-track-btn:hover { opacity: 1; background: rgba(200,151,58,0.08); }
+.mw-track-btn.playing { opacity: 1; color: var(--gold-light); }
+.mw-track-btn.playing::before { content: "♪ "; }
+/* Hidden YouTube iframes */
+#yt-container { position: fixed; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+
+/* ========== ONBOARDING ========== */
+.ob-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 60px 20px 80px;
+  position: relative;
+  z-index: 1;
+  overflow-y: auto;
+}
+.ob-step {
+  display: none !important;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 560px;
+  width: 100%;
+}
+.ob-step.active { 
+  display: flex !important;
+  animation: obFadeIn 0.7s ease;
+}
+@keyframes obFadeIn {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.ob-orb {
+  font-size: 56px;
+  color: var(--gold-light);
+  margin-bottom: 24px;
+  animation: orbPulse 3s ease-in-out infinite;
+  text-shadow: 0 0 30px rgba(200,151,58,0.6);
+}
+.ob-eyebrow {
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+  margin-bottom: 16px;
+}
+.ob-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(20px, 4vw, 32px);
+  color: var(--gold-light);
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+.ob-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(17px, 2.2vw, 21px);
+  color: var(--white);
+  line-height: 1.85;
+  margin-bottom: 28px;
+  font-style: italic;
+  opacity: 0.9;
+}
+.ob-hint {
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  color: var(--gold);
+  opacity: 0.5;
+  letter-spacing: 1px;
+  margin-top: 12px;
+}
+.ob-textarea {
+  width: 100%;
+  min-height: 130px;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid rgba(200,151,58,0.3);
+  border-radius: 14px;
+  color: var(--white);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  padding: 16px 18px;
+  outline: none;
+  resize: vertical;
+  line-height: 1.7;
+  margin-bottom: 24px;
+  transition: border-color 0.3s;
+}
+.ob-textarea:focus { border-color: var(--gold); box-shadow: 0 0 20px rgba(200,151,58,0.1); }
+.ob-textarea::placeholder { color: rgba(200,151,58,0.3); font-style: italic; }
+.ob-btn {
+  padding: 16px 36px;
+  border-radius: 12px;
+  border: 1px solid var(--gold);
+  background: linear-gradient(135deg, rgba(200,151,58,0.2), rgba(200,151,58,0.08));
+  color: var(--gold-light);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 1px;
+  margin-top: 8px;
+}
+.ob-btn:hover { background: linear-gradient(135deg, rgba(200,151,58,0.35), rgba(200,151,58,0.15)); box-shadow: 0 0 30px rgba(200,151,58,0.2); transform: translateY(-2px); }
+.ob-btn-secondary {
+  padding: 12px 28px;
+  border-radius: 10px;
+  border: 1px solid rgba(200,151,58,0.25);
+  background: transparent;
+  color: var(--gold);
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  margin-top: 10px;
+  letter-spacing: 1px;
+}
+.ob-btn-secondary:hover { opacity: 1; }
+
+/* Realm selector */
+.ob-realms {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 8px;
+  text-align: left;
+}
+.ob-realm-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(200,151,58,0.18);
+  background: rgba(10,8,0,0.6);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.ob-realm-btn:hover {
+  border-color: rgba(200,151,58,0.5);
+  background: rgba(200,151,58,0.08);
+  transform: translateX(4px);
+}
+.ob-realm-btn span { font-size: 28px; flex-shrink: 0; }
+.ob-realm-btn strong {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 13px;
+  color: var(--gold-light);
+  display: block;
+  margin-bottom: 3px;
+}
+.ob-realm-btn p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: var(--stardust);
+  opacity: 0.7;
+  margin: 0;
+  font-style: italic;
+}
+.ob-realm-icon-large {
+  font-size: 72px;
+  margin-bottom: 16px;
+  animation: obFadeIn 0.5s ease;
+}
+.ob-affirmation {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(16px, 2vw, 19px);
+  font-style: italic;
+  color: var(--gold-pale);
+  line-height: 1.8;
+  padding: 20px 24px;
+  border-left: 2px solid var(--gold);
+  border-right: 2px solid var(--gold);
+  margin: 4px 0 28px;
+  opacity: 0.9;
+}
+
+/* Breathing circle */
+.breath-circle {
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  border: 1px solid rgba(200,151,58,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 8px auto;
+}
+.breath-circle.large { width: 200px; height: 200px; }
+.breath-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  opacity: 0.6;
+  animation: breathExpand 4s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(200,151,58,0.2);
+}
+.breath-text {
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  z-index: 1;
+  opacity: 0.8;
+}
+@keyframes breathExpand {
+  0%   { transform: scale(0.7); opacity: 0.3; }
+  45%  { transform: scale(1.15); opacity: 0.8; }
+  55%  { transform: scale(1.15); opacity: 0.8; }
+  100% { transform: scale(0.7); opacity: 0.3; }
+}
+
+/* Overlays */
+.breath-overlay, .celebrate-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.breath-overlay.show, .celebrate-overlay.show { display: flex; }
+.breath-overlay-inner, .celebrate-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 480px;
+  animation: obFadeIn 0.6s ease;
+}
+.celebrate-icon {
+  font-size: 56px;
+  margin-bottom: 16px;
+  animation: celebratePop 0.5s ease;
+  color: var(--gold-light);
+  text-shadow: 0 0 40px rgba(200,151,58,0.8);
+}
+@keyframes celebratePop {
+  0%   { transform: scale(0); opacity: 0; }
+  70%  { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  .realms-grid { grid-template-columns: 1fr; }
+  .realm-preview { grid-template-columns: repeat(2, 1fr); }
+  .auth-card { padding: 32px 24px; }
+  .dash-header { padding: 16px 20px; }
+  .realm-header { padding: 16px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Stars -->
+<div class="stars-bg" id="stars"></div>
+<div class="nebula-bg"></div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+<div class="copied-tip" id="copiedTip"></div>
+
+<!-- ==================== LANDING ==================== -->
+<div id="landing" class="page active">
+  <div class="cosmos-orb"></div>
+  <div class="eos-badge">✦ Evolution of Souls ✦</div>
+  <h1 class="landing-title">Heaven on Earth Quest</h1>
+  <p class="landing-sub">No leaders to follow or content to consume, instead, a creation system meant to support you.</p>
+  <div class="divider"></div>
+  <p class="landing-desc">
+    This is not a course. It is a sacred journey to design and build your own slice of heaven on earth. Through 6 realms, actionable steps, and tangible creations, your greatest desires will begin to shape form in real time, thus creating, your own slice of Heaven On Earth.
+  </p>
+
+
+
+  <div class="realms-prose">
+    <p class="realms-prose-intro">Six areas of your life. Each one a doorway. Together, they form the complete landscape of your Heaven on Earth.</p>
+
+    <div class="realm-prose-item">
+      <span class="realm-prose-icon">🔥</span>
+      <span class="realm-prose-name">Work &amp; Purpose.</span>
+      <span class="realm-prose-text">Clarify your most aligned projects, prototype your top idea, and map who belongs beside you. Leave with a living blueprint and the momentum to actually move.</span>
+    </div>
+
+    <div class="realm-prose-item">
+      <span class="realm-prose-icon">💞</span>
+      <span class="realm-prose-name">Relationships.</span>
+      <span class="realm-prose-text">Map the connections already in your life, deepen what matters, invite in who is meant to be there, and create rituals that nourish your bonds. Love and creation expand together.</span>
+    </div>
+
+    <div class="realm-prose-item">
+      <span class="realm-prose-icon">🎨</span>
+      <span class="realm-prose-name">Creativity.</span>
+      <span class="realm-prose-text">Choose your mediums, let the ideas flow, and birth your first real creation. This realm is for the part of you that has always known it was here to make something.</span>
+    </div>
+
+    <div class="realm-prose-item">
+      <span class="realm-prose-icon">🌍</span>
+      <span class="realm-prose-name">Community.</span>
+      <span class="realm-prose-text">Find where you belong, birth a contribution that matters, gather the right people, and witness how your light ripples far beyond what you can see.</span>
+    </div>
+
+    <div class="realm-prose-item">
+      <span class="realm-prose-icon">⚡</span>
+      <span class="realm-prose-name">Self Mastery.</span>
+      <span class="realm-prose-text">Face what has been holding you back, choose how you want to grow, and start tracking the wins that prove you are already becoming her. This realm builds the one who can hold it all.</span>
+    </div>
+
+    <div class="realm-prose-item">
+      <span class="realm-prose-icon">💎</span>
+      <span class="realm-prose-name">Abundance.</span>
+      <span class="realm-prose-text">Take honest stock of what you already have, close the gaps, and shift how you see wealth and possibility. Abundance is not coming. It is already here waiting to be claimed.</span>
+    </div>
+  </div>
+
+  <!-- BEACON CALL SECTION -->
+  <div class="beacon-section">
+    <div class="divider" style="margin:48px auto 40px;"></div>
+    <div class="beacon-eyebrow">✦ A Message From My Soul To Yours ✦</div>
+    <h2 class="beacon-title">Heaven Is Not Just A Place We Go When We Die</h2>
+    <p class="beacon-body">It is a state of being we can experience here, now. In this life, there are specific areas, when even slightly realigned, where joy and love naturally begin to expand. This quest exists to help you find the leakages, repair the breaches, and create your own slice of Heaven, here, now. No more confusion about what's next. No more feeling like something is missing. No more sitting back and watching. It is time to rise as a core player in this game.</p>
+
+    <div class="beacon-cards">
+      <div class="beacon-card">
+        <span class="beacon-card-icon">🌊</span>
+        <div class="beacon-card-title">New Earth Is Here</div>
+        <div class="beacon-card-text">The more souls awaken and begin questioning their part in all of this, the more New Earth expands into the physical. And here is the key, it expands through creation, not consumption. This is your invitation to be part of that expansion.</div>
+      </div>
+      <div class="beacon-card">
+        <span class="beacon-card-icon">∞</span>
+        <div class="beacon-card-title">Why Did We Come Here?</div>
+        <div class="beacon-card-text">We are infinite beings, souls, part of the One Soul, Most High, Source, God. So why come down to experience something our souls outside of space and time already knew? That is precisely the point. To create. To experience. To evolve. To bring Heaven Codes into the physical through our love, our expression, our presence.</div>
+      </div>
+      <div class="beacon-card">
+        <span class="beacon-card-icon">✨</span>
+        <div class="beacon-card-title">No Leaders. No Courses. Just Creation.</div>
+        <div class="beacon-card-text">This is not a program to study or content to consume. The Heaven on Earth Quest is a living, breathing creation system, 6 realms, actionable steps, and tangible outputs that shape your greatest desires into form in real time.</div>
+      </div>
+    </div>
+
+    <div class="beacon-quote">
+      "Your greatest desires will begin to shape form in real time, thus creating your own slice of Heaven on Earth. Let's create, mi amor. ✦"
+    </div>
+
+    <div class="beacon-eos">
+      <span class="beacon-eos-name">Evolution Of Souls</span><br>
+      <span class="beacon-eos-sub">New Earth. New Creation. Heaven Now.</span>
+    </div>
+
+    <div class="divider" style="margin:40px auto 48px;"></div>
+
+    <button class="cta-main" onclick="showPage('password-page')" style="margin-bottom:0;">Begin Your Quest ✦</button>
+  </div>
+
+
+  <div class="divider" style="margin:48px auto 32px;"></div>
+  <div class="beacon-eyebrow" style="margin-bottom:24px;">✦ Begin Your Journey ✦</div>
+
+  <div class="price-crystal">
+    <span class="price-number">$36.90</span>
+    <span class="price-note">369, the foundation of creation</span>
+  </div>
+
+  <div class="payment-info">
+    <h3>✦ Send Payment ✦</h3>
+    <div class="payment-row" style="flex-direction:column;align-items:stretch;gap:8px;">
+      <span class="payment-label">PayPal</span>
+      <a href="https://py.pl/YM85Gpa55zSYrT1rAZ786A" target="_blank" class="pay-btn" style="font-size:12px;padding:8px 16px;justify-content:center;text-align:center;">Pay $36.90 via PayPal ✦</a>
+    </div>
+    <div class="payment-row">
+      <span class="payment-label">CashApp</span>
+      <span class="payment-value" onclick="copyText('$ArielEOS')">$ArielEOS</span>
+    </div>
+    <div class="payment-row">
+      <span class="payment-label">Venmo</span>
+      <span class="payment-value" onclick="copyText('@evolutionofsouls')">@evolutionofsouls</span>
+    </div>
+  </div>
+
+  <p style="font-family:'Raleway',sans-serif;font-size:13px;color:var(--lavender);opacity:0.7;margin-bottom:12px;">After payment, you'll receive your quest password via DM</p>
+
+  <button class="cta-main" onclick="showPage('password-page')">I've Paid, Enter My Quest ✦</button>
+  <span class="already-paid" onclick="showPage('password-page')">Already have a password? Sign in here</span>
+
+
+
+<!-- ==================== PASSWORD PAGE ==================== -->
+<div id="password-page" class="page">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
+    <div class="auth-card" id="pw-card">
+      <div class="auth-orb">🌟</div>
+      <h2 class="auth-title">Enter the Quest</h2>
+      <p class="auth-subtitle">Enter your quest password to begin</p>
+      <div class="field-group">
+        <label class="field-label">Quest Password</label>
+        <input class="field-input" type="password" id="pw-input" placeholder="Your secret password..." onkeydown="if(event.key==='Enter')checkPassword()">
+      </div>
+      <div class="error-msg" id="pw-error">✦ That password doesn't resonate. Try again.</div>
+      <button class="btn-primary" onclick="checkPassword()">Unlock My Journey ✦</button>
+      <span class="auth-back" onclick="showPage('landing')">← Back</span>
+    </div>
+
+    <!-- Account Creation (shown after correct password) -->
+    <div class="auth-card" id="account-card" style="display:none;">
+      <div class="auth-orb">✨</div>
+      <h2 class="auth-title">Create Your Account</h2>
+      <p class="auth-subtitle">Your sacred space awaits</p>
+      <div class="field-group">
+        <label class="field-label">Username</label>
+        <input class="field-input" id="reg-username" placeholder="Choose a soul name...">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Email</label>
+        <input class="field-input" id="reg-email" type="email" placeholder="your@email.com">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Create Password</label>
+        <input class="field-input" id="reg-password" type="password" placeholder="Choose a sacred password...">
+      </div>
+      <div class="error-msg" id="reg-error">Please fill in all fields.</div>
+      <button class="btn-primary" onclick="createAccount()">Begin My Quest ✦</button>
+      <p style="font-family:'Raleway',sans-serif;font-size:13px;color:var(--lavender);opacity:0.6;margin-top:16px;text-align:center;">Already have an account? <span style="cursor:pointer;text-decoration:underline;" onclick="showLogin()">Sign in</span></p>
+    </div>
+
+    <!-- Login (returning users) -->
+    <div class="auth-card" id="login-card" style="display:none;">
+      <div class="auth-orb">🔮</div>
+      <h2 class="auth-title">Welcome Back</h2>
+      <p class="auth-subtitle">Continue your creation journey</p>
+      <div class="field-group">
+        <label class="field-label">Email</label>
+        <input class="field-input" id="login-email" type="email" placeholder="your@email.com">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Password</label>
+        <input class="field-input" id="login-password" type="password" placeholder="Your password..." onkeydown="if(event.key==='Enter')loginUser()">
+      </div>
+      <div class="error-msg" id="login-error">Email or password not found.</div>
+      <button class="btn-primary" onclick="loginUser()">Enter My Quest ✦</button>
+      <p style="font-family:'Raleway',sans-serif;font-size:13px;color:var(--lavender);opacity:0.6;margin-top:16px;text-align:center;">New here? <span style="cursor:pointer;text-decoration:underline;" onclick="document.getElementById('login-card').style.display='none';document.getElementById('pw-card').style.display='block';">Enter your quest password</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div id="dashboard" class="page">
+  <div class="dash-header">
+    <div class="dash-logo">✦ EOS Quest</div>
+    <div class="dash-user" id="dash-username"></div>
+    <button class="dash-logout" onclick="logout()">Sign Out</button>
+  </div>
+  <div class="dash-hero">
+    <h2 class="dash-title">Your Heaven on Earth Quest</h2>
+    <p class="dash-welcome" id="dash-greeting">Welcome, Creator ✦</p>
+  </div>
+  <div class="progress-overview">
+    <div class="progress-bar-wrap">
+      <div class="progress-label">
+        <span>Overall Progress</span>
+        <span id="overall-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="overall-bar" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+  <div class="realms-grid" id="realms-grid"></div>
+  <div style="text-align:center;margin-top:40px;">
+    <button class="cta-main" style="max-width:300px;" onclick="showShowcase()">✦ Showcase Gallery</button>
+  </div>
+</div>
+
+
+<!-- ==================== ONBOARDING ==================== -->
+<div id="onboarding" class="page">
+  <div class="ob-wrap">
+
+    <!-- STEP 1: Welcome Breath -->
+    <div class="ob-step active" id="ob-step-1">
+      <div class="ob-orb">✦</div>
+      <h2 class="ob-title" id="ob-welcome-name">Welcome, Soul.</h2>
+      <p class="ob-body">Before we begin your journey, take a moment to arrive fully.</p>
+      <div class="breath-circle" id="breathCircle1">
+        <div class="breath-ring"></div>
+        <div class="breath-text" id="breathText1">Breathe In</div>
+      </div>
+      <p class="ob-hint">Follow the circle. Breathe in as it expands, out as it contracts.</p>
+      <button class="ob-btn" onclick="obNext(2)" style="margin-top:32px;">I am ready ✦</button>
+    </div>
+
+    <!-- STEP 2: Intention -->
+    <div class="ob-step" id="ob-step-2">
+      <div class="ob-eyebrow">✦ Your Intention ✦</div>
+      <h2 class="ob-title">Why are you here?</h2>
+      <p class="ob-body">Not the surface reason. The real one. What is life asking you to create, heal, or expand right now?</p>
+      <textarea class="ob-textarea" id="ob-intention" placeholder="Write freely. This is just for you..."></textarea>
+      <button class="ob-btn" onclick="obNext(3)">Continue ✦</button>
+    </div>
+
+    <!-- STEP 3: Realm Selection -->
+    <div class="ob-step" id="ob-step-3">
+      <div class="ob-eyebrow">✦ Choose Your Entry Point ✦</div>
+      <h2 class="ob-title">Which area of your life is calling for the most love right now?</h2>
+      <p class="ob-body">Trust your first feeling. There is no wrong answer.</p>
+      <div class="ob-realms">
+        <div class="ob-realm-btn" onclick="obSelectRealm(0)"><span>🔥</span><div><strong>Work & Purpose</strong><p>Your projects, calling, and aligned creations</p></div></div>
+        <div class="ob-realm-btn" onclick="obSelectRealm(1)"><span>💞</span><div><strong>Relationships</strong><p>Your connections, bonds, and love</p></div></div>
+        <div class="ob-realm-btn" onclick="obSelectRealm(2)"><span>🎨</span><div><strong>Creativity</strong><p>Your expression, art, and making</p></div></div>
+        <div class="ob-realm-btn" onclick="obSelectRealm(3)"><span>🌍</span><div><strong>Community</strong><p>Your impact, contribution, and circle</p></div></div>
+        <div class="ob-realm-btn" onclick="obSelectRealm(4)"><span>⚡</span><div><strong>Self Mastery</strong><p>Your growth, beliefs, and inner world</p></div></div>
+        <div class="ob-realm-btn" onclick="obSelectRealm(5)"><span>💎</span><div><strong>Abundance</strong><p>Your resources, mindset, and flow</p></div></div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Realm Soul Message -->
+    <div class="ob-step" id="ob-step-4">
+      <div class="ob-realm-icon-large" id="ob-selected-icon"></div>
+      <div class="ob-eyebrow">✦ Your First Realm ✦</div>
+      <h2 class="ob-title" id="ob-selected-realm-name"></h2>
+      <p class="ob-body" id="ob-selected-realm-msg"></p>
+      <div class="ob-affirmation" id="ob-affirmation"></div>
+      <button class="ob-btn" onclick="obEnterRealm()">Enter This Realm ✦</button>
+      <button class="ob-btn-secondary" onclick="showPage('dashboard')">See All Realms First</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== BREATHING OVERLAY ==================== -->
+<div id="breathOverlay" class="breath-overlay">
+  <div class="breath-overlay-inner">
+    <div class="ob-eyebrow" style="margin-bottom:16px;">✦ Pause & Breathe ✦</div>
+    <div class="breath-circle large" id="breathCircleLarge">
+      <div class="breath-ring"></div>
+      <div class="breath-text" id="breathTextLarge">Breathe In</div>
+    </div>
+    <p class="ob-body" style="margin-top:24px;" id="breathMessage">Take a moment to breathe before continuing.</p>
+    <button class="ob-btn" style="margin-top:24px;" onclick="closeBreath()">Continue ✦</button>
+  </div>
+</div>
+
+<!-- ==================== TASK COMPLETE CELEBRATION ==================== -->
+<div id="celebrateOverlay" class="celebrate-overlay">
+  <div class="celebrate-inner">
+    <div class="celebrate-icon" id="celebrateIcon">✦</div>
+    <h2 class="ob-title" id="celebrateTitle">Beautiful.</h2>
+    <p class="ob-body" id="celebrateMsg">You just created something real.</p>
+    <button class="ob-btn" onclick="closeCelebrate()">Keep Going ✦</button>
+  </div>
+</div>
+
+<!-- ==================== REALM COMPLETE OVERLAY ==================== -->
+<div id="realmCompleteOverlay" class="celebrate-overlay">
+  <div class="celebrate-inner">
+    <div class="celebrate-icon" style="font-size:64px;" id="realmCompleteIcon">🌟</div>
+    <div class="ob-eyebrow">✦ Realm Complete ✦</div>
+    <h2 class="ob-title" id="realmCompleteTitle">You Did It.</h2>
+    <p class="ob-body" id="realmCompleteMsg"></p>
+    <div class="ob-affirmation" style="margin:20px 0;">Take time to rest and let this integration happen. Meditate, go outside, drink water, sleep well.</div>
+    <button class="ob-btn" onclick="closeRealmComplete()">Return to My Quest ✦</button>
+  </div>
+</div>
+
+<!-- ==================== REALM VIEW ==================== -->
+<div id="realm-view" class="page">
+  <div class="realm-header">
+    <button class="back-btn" onclick="showPage('dashboard')">←</button>
+    <div class="realm-header-info">
+      <div class="realm-header-title" id="realm-header-title"></div>
+      <div class="realm-header-progress" id="realm-header-progress"></div>
+    </div>
+  </div>
+  <div class="realm-content">
+    <div class="realm-intro">
+      <span class="realm-intro-icon" id="realm-icon"></span>
+      <h2 class="realm-intro-title" id="realm-title"></h2>
+      <p class="realm-intro-goal" id="realm-goal"></p>
+    </div>
+    <div class="task-list" id="task-list"></div>
+  </div>
+</div>
+
+<!-- ==================== SHOWCASE ==================== -->
+<div id="showcase-view" class="page">
+  <div class="realm-header">
+    <button class="back-btn" onclick="showPage('dashboard')">←</button>
+    <div class="realm-header-info">
+      <div class="realm-header-title">Showcase Gallery</div>
+      <div class="realm-header-progress">Share your creations with the community</div>
+    </div>
+  </div>
+  <div class="showcase-content">
+    <div class="showcase-upload">
+      <div class="showcase-upload-title">✦ Share Your Creation</div>
+      <p style="font-size:14px;color:var(--lavender);font-style:italic;margin-bottom:16px;opacity:0.8;">Share a reflection, breakthrough, or creation to inspire others</p>
+      <textarea class="showcase-textarea" id="showcase-input" placeholder="What have you created or discovered on your quest? What insight wants to be shared?"></textarea>
+      <button class="btn-save" onclick="submitShowcase()">Share to the Cosmos ✦</button>
+    </div>
+    <div class="submissions-grid" id="submissions-grid"></div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ==================== DATA ====================
+const QUEST_PASSWORD = 'NewEarthEOS';
+
+const REALMS = [
+  {
+    id: 0, icon: '🔥', name: 'Work / Purpose',
+    goal: 'Clarify, prototype, and activate aligned projects',
+    media: 'Diagrams, sketches, inspirational images, audio clips',
+    tasks: [
+      { title: 'Project Inventory', sub: 'Uncover your creations', desc: 'List all ideas and projects you feel drawn to.', reflection: 'Which excites you most and why?', output: 'List of potential creations' },
+      { title: 'Alignment Ranking', sub: 'Find your highest calling', desc: 'Rank your projects by alignment with your highest self.', reflection: 'Which aligns best with your purpose?', output: 'Top project selected' },
+      { title: 'Micro-Action Step', sub: 'Move into motion', desc: 'Choose one small step to take this week.', reflection: 'How will this step reflect your capabilities?', output: 'Weekly action plan' },
+      { title: 'Prototype Draft', sub: 'Make it tangible', desc: 'Sketch, outline, or concept your top project.', reflection: 'How does this prototype reflect your heaven on earth vision?', output: 'Mini blueprint' },
+      { title: 'Collaboration Map', sub: 'Expand your reach', desc: 'Identify 1, 2 people who could amplify your project.', reflection: 'How could collaboration expand your creation?', output: 'Collaboration map' },
+      { title: 'Milestones & Timeline', sub: 'Anchor your vision in time', desc: 'Set measurable 7, 14 day milestones.', reflection: 'How will achieving this advance your vision?', output: 'Milestone tracker' },
+      { title: 'Impact Visualization', sub: 'See your future', desc: 'Map how your project contributes to your slice of heaven.', reflection: 'What does success look, feel, and sound like?', output: 'Visual impact map' },
+      { title: 'Intentions Capture', sub: 'Declare your creation', desc: 'Journal or record your intentions for this project.', reflection: 'How does articulating intentions affect your clarity?', output: 'Documented intentions' }
+    ]
+  },
+  {
+    id: 1, icon: '💞', name: 'Relationships',
+    goal: 'Build aligned, meaningful connections',
+    media: 'Mind maps, video/audio sharing, flow charts',
+    tasks: [
+      { title: 'Relationship Inventory', sub: 'Know your circle', desc: 'List your top 5, 10 connections and their influence on you.', reflection: 'Which relationships fuel your growth the most?', output: 'Relationship map' },
+      { title: 'Connection Deepening', sub: 'Strengthen your bonds', desc: 'Choose one relationship to strengthen or repair.', reflection: 'How does this connection support your heaven on earth?', output: 'Action plan' },
+      { title: 'New Connections', sub: 'Expand your universe', desc: 'Brainstorm 2, 3 new meaningful connections to pursue.', reflection: 'How could these new connections expand your creations?', output: 'Potential collaborators list' },
+      { title: 'Interaction Design', sub: 'Create sacred rituals', desc: 'Plan a micro-action or ritual to nurture key relationships.', reflection: 'How will this ritual strengthen mutual growth?', output: 'Relationship mini-plan' },
+      { title: 'Boundaries Mapping', sub: 'Honor your energy', desc: 'Identify what you need more and less of in relationships.', reflection: 'How do clear boundaries support your creations?', output: 'Boundaries chart' },
+      { title: 'Community Contribution', sub: 'Ripple outward', desc: 'Identify one small action to positively impact your circle.', reflection: 'How does your action ripple out beyond yourself?', output: 'Micro-community activation' },
+      { title: 'Feedback Loop', sub: 'Learn from reflection', desc: 'Share one creation or idea with a trusted person and record their response.', reflection: 'What insights did you gain from sharing?', output: 'Feedback log' },
+      { title: 'Integration', sub: 'Weave it all together', desc: 'Reflect on how relationships support your ongoing creations.', reflection: 'Which connections support your creation most deeply?', output: 'Integrated relationship strategy' }
+    ]
+  },
+  {
+    id: 2, icon: '🎨', name: 'Creativity',
+    goal: 'Activate tangible, joyful self-expression',
+    media: 'Sketches, mood boards, audio recordings',
+    tasks: [
+      { title: 'Select Your Mediums', sub: 'Choose your instruments', desc: 'Pick 2, 3 forms of expression, writing, art, music, design, movement, etc.', reflection: 'Which mediums feel most alive and authentic to you right now?', output: 'Your chosen creative mediums' },
+      { title: 'Idea Generation', sub: 'Let creation flow', desc: 'Create 5, 10 micro-creation ideas, small, doable, exciting.', reflection: 'Which ideas feel most aligned with your current energy?', output: 'List of micro-creation ideas' },
+      { title: 'Prototype Creation', sub: 'Birth something real', desc: 'Draft your first tangible version of one idea.', reflection: 'What did the process of creation reveal to you?', output: 'First prototype' },
+      { title: 'Experimentation', sub: 'Break the rules', desc: 'Try a new method, style, or approach you\'ve never used before.', reflection: 'What did this experiment teach you about your creative range?', output: 'Documented experiment' },
+      { title: 'Collaboration Exploration', sub: 'Create together', desc: 'Identify a co-creation opportunity with another soul.', reflection: 'How might collaboration expand your creative expression?', output: 'Co-creation opportunity identified' },
+      { title: 'Iteration', sub: 'Refine the gem', desc: 'Refine your first creation based on reflection and any feedback.', reflection: 'How has iteration deepened or evolved your creation?', output: 'Refined creation' },
+      { title: 'Presentation Prep', sub: 'Step into the light', desc: 'Optional: prepare your creation for a showcase or recording.', reflection: 'What does it feel like to share your creation with others?', output: 'Showcase-ready piece' },
+      { title: 'Creative Reflection', sub: 'Integrate the journey', desc: 'Summarize your insights and next creative ideas.', reflection: 'How has this realm shifted your relationship with creativity?', output: 'Creative journey summary' }
+    ]
+  },
+  {
+    id: 3, icon: '🌍', name: 'Community',
+    goal: 'Co-create impact, solutions, and collective light',
+    media: 'Diagrams, project boards, video walkthroughs',
+    tasks: [
+      { title: 'Community Mapping', sub: 'See your ecosystem', desc: 'List your existing networks, communities, and circles of influence.', reflection: 'Where do you feel most energized and aligned?', output: 'Community map' },
+      { title: 'Micro-Project Brainstorm', sub: 'Find your contribution', desc: 'Identify a small, meaningful project you could contribute to your community.', reflection: 'What impact do you most want to create?', output: 'Project idea' },
+      { title: 'Collaboration Planning', sub: 'Gather your allies', desc: 'Find 1, 2 partners to implement your micro-project with.', reflection: 'How does collaboration amplify the impact?', output: 'Collaboration plan' },
+      { title: 'Action Timeline', sub: 'Commit to the path', desc: 'Schedule your project steps with specific dates and actions.', reflection: 'What does committing to this timeline reveal about your priorities?', output: 'Project timeline' },
+      { title: 'Impact Metrics', sub: 'Define success', desc: 'Define measurable outcomes that will signal success for your project.', reflection: 'How will you know your contribution made a difference?', output: 'Success metrics' },
+      { title: 'Feedback Loop', sub: 'Listen and evolve', desc: 'Gather input and responses from peers and community members.', reflection: 'What did you learn from listening?', output: 'Feedback collected' },
+      { title: 'Documentation', sub: 'Capture the journey', desc: 'Record your progress through notes, photos, or video.', reflection: 'What story does your documentation tell?', output: 'Progress documentation' },
+      { title: 'Integration', sub: 'Measure your impact', desc: 'Reflect on the cumulative impact of your community actions.', reflection: 'How has contributing to community expanded your own journey?', output: 'Impact reflection' }
+    ]
+  },
+  {
+    id: 4, icon: '⚡', name: 'Self-Mastery',
+    goal: 'Expand awareness, discipline, and alignment',
+    media: 'Journals, trackers, audio reflection prompts',
+    tasks: [
+      { title: 'Belief Audit', sub: 'Face your shadows', desc: 'Identify 3 limiting beliefs or habits that are holding you back.', reflection: 'Where did these beliefs originate, and are they still serving you?', output: 'Belief audit list' },
+      { title: 'Practice Selection', sub: 'Choose your discipline', desc: 'Pick a daily or weekly growth practice that calls to you.', reflection: 'Why does this practice feel aligned with your evolution?', output: 'Chosen practice + schedule' },
+      { title: 'Reflection Journaling', sub: 'Mine your past', desc: 'Review past breakthroughs and patterns in your life.', reflection: 'What recurring themes or gifts do you notice?', output: 'Pattern journal' },
+      { title: 'Milestone Setting', sub: 'Aim higher', desc: 'Set measurable 7, 14 day personal growth goals.', reflection: 'What version of yourself will achieve these milestones?', output: 'Growth milestones' },
+      { title: 'Visualization', sub: 'Embody your highest self', desc: 'Deeply imagine and describe yourself fully embodying your highest self.', reflection: 'What does it feel like to already be this version of yourself?', output: 'Highest self description' },
+      { title: 'Resource Audit', sub: 'Know your tools', desc: 'Identify mentors, tools, courses, or materials that support your growth.', reflection: 'Which resources are you underutilizing?', output: 'Resource inventory' },
+      { title: 'Track Wins', sub: 'Celebrate the journey', desc: 'Log small daily wins and breakthroughs from this week.', reflection: 'How does celebrating wins shift your momentum?', output: 'Wins log' },
+      { title: 'Integration Reflection', sub: 'Embody the mastery', desc: 'Summarize your insights and alignment from this realm.', reflection: 'How has this realm transformed your relationship with yourself?', output: 'Mastery reflection' }
+    ]
+  },
+  {
+    id: 5, icon: '💎', name: 'Abundance',
+    goal: 'Align mindset, resources, and opportunities',
+    media: 'Spreadsheets, charts, vision boards, audio guidance',
+    tasks: [
+      { title: 'Resource Inventory', sub: 'Count your riches', desc: 'List all your current resources, time, skills, network, money, knowledge.', reflection: 'What resources do you have that you\'ve been undervaluing?', output: 'Full resource inventory' },
+      { title: 'Gap Analysis', sub: 'Bridge to abundance', desc: 'Identify missing resources and ways you could acquire or create them.', reflection: 'What is the most important gap to close first?', output: 'Gap analysis + acquisition plan' },
+      { title: 'Micro-Manifestation', sub: 'Take tangible action', desc: 'Take one concrete, tangible step using your current resources toward abundance.', reflection: 'What does taking this step feel like?', output: 'Completed micro-action' },
+      { title: 'Alignment Check', sub: 'Ensure your resources flow', desc: 'Map your current resources against your active creations.', reflection: 'Where are your resources most and least aligned?', output: 'Alignment map' },
+      { title: 'Abundance Mindset', sub: 'Rewire your beliefs', desc: 'Journal on both limiting and expansive beliefs you hold about wealth and resources.', reflection: 'What new belief about abundance could you choose to adopt today?', output: 'Mindset journal' },
+      { title: 'Opportunity Scan', sub: 'See what\'s possible', desc: 'Identify 3, 5 new aligned opportunities in your current environment.', reflection: 'What opportunities have you been overlooking?', output: 'Opportunity list' },
+      { title: 'Abundance Goal', sub: 'Set your sights', desc: 'Set a meaningful 7, 14 day abundance goal, tangible and measurable.', reflection: 'What will achieving this goal prove to you?', output: '7, 14 day abundance goal' },
+      { title: 'Integration Reflection', sub: 'Anchor the abundance', desc: 'Summarize your resource and mindset alignment insights.', reflection: 'How has your relationship with abundance shifted through this realm?', output: 'Abundance integration' }
+    ]
+  }
+];
+
+// ==================== STATE ====================
+let currentUser = null;
+let currentRealmId = null;
+const USERS_KEY = 'eos_users';
+const PROGRESS_KEY = 'eos_progress';
+const SHOWCASE_KEY = 'eos_showcase';
+
+function getUsers() { try { return JSON.parse(localStorage.getItem(USERS_KEY) || '{}'); } catch(e) { return {}; } }
+function saveUsers(u) { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
+function getProgress(email) { try { return JSON.parse(localStorage.getItem(PROGRESS_KEY + '_' + email) || '{}'); } catch(e) { return {}; } }
+function saveProgress(email, p) { localStorage.setItem(PROGRESS_KEY + '_' + email, JSON.stringify(p)); }
+function getShowcase() { try { return JSON.parse(localStorage.getItem(SHOWCASE_KEY) || '[]'); } catch(e) { return []; } }
+function saveShowcase(s) { localStorage.setItem(SHOWCASE_KEY, JSON.stringify(s)); }
+
+// ==================== STARS ====================
+(function createStars() {
+  const container = document.getElementById('stars');
+  const colors = ['#e8c060','#f0d080','#c8973a','#fff8ee','#d4b870','#e0c878'];
+  for (let i = 0; i < 160; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 3 + 0.5;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const fy = (Math.random() * 24 - 12).toFixed(1);
+    const fx = (Math.random() * 16 - 8).toFixed(1);
+    const fy2 = (Math.random() * 20 - 10).toFixed(1);
+    const fx2 = (Math.random() * 12 - 6).toFixed(1);
+    s.style.cssText = `
+      left:${Math.random()*100}%;top:${Math.random()*100}%;
+      width:${size}px;height:${size}px;
+      --dur:${2+Math.random()*5}s;
+      --delay:${Math.random()*6}s;
+      --float-dur:${6+Math.random()*10}s;
+      --float-delay:${Math.random()*8}s;
+      --min-op:${0.15+Math.random()*0.25};
+      --max-op:${0.5+Math.random()*0.5};
+      --particle-color:${color};
+      --fy:${fy}px;--fx:${fx}px;--fy2:${fy2}px;--fx2:${fx2}px;
+    `;
+    container.appendChild(s);
+  }
+})();
+
+// ==================== NAVIGATION ====================
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = 'none';
+  });
+  const target = document.getElementById(id);
+  target.classList.add('active');
+  target.style.display = 'block';
+  window.scrollTo({top: 0, behavior: 'instant'});
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
+function showLogin() {
+  document.getElementById('pw-card').style.display = 'none';
+  document.getElementById('account-card').style.display = 'none';
+  document.getElementById('login-card').style.display = 'block';
+}
+
+// ==================== AUTH ====================
+function checkPassword() {
+  const val = document.getElementById('pw-input').value.trim();
+  if (val === QUEST_PASSWORD) {
+    document.getElementById('pw-card').style.display = 'none';
+    document.getElementById('account-card').style.display = 'block';
+  } else {
+    document.getElementById('pw-error').classList.add('show');
+    setTimeout(() => document.getElementById('pw-error').classList.remove('show'), 3000);
+  }
+}
+
+function createAccount() {
+  const username = document.getElementById('reg-username').value.trim();
+  const email = document.getElementById('reg-email').value.trim().toLowerCase();
+  const password = document.getElementById('reg-password').value;
+  if (!username || !email || !password) {
+    document.getElementById('reg-error').textContent = 'Please fill in all fields.';
+    document.getElementById('reg-error').classList.add('show');
+    return;
+  }
+  const users = getUsers();
+  if (users[email]) {
+    document.getElementById('reg-error').textContent = 'This email already has an account. Sign in instead.';
+    document.getElementById('reg-error').classList.add('show');
+    return;
+  }
+  users[email] = { username, password, created: Date.now() };
+  saveUsers(users);
+  currentUser = { email, username };
+  // Small delay to ensure DOM is ready
+  setTimeout(() => { enterDashboard(); }, 50);
+}
+
+function loginUser() {
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const password = document.getElementById('login-password').value;
+  const users = getUsers();
+  if (users[email] && users[email].password === password) {
+    currentUser = { email, username: users[email].username };
+    setTimeout(() => { enterDashboard(); }, 50);
+  } else {
+    document.getElementById('login-error').classList.add('show');
+    setTimeout(() => document.getElementById('login-error').classList.remove('show'), 3000);
+  }
+}
+
+function logout() {
+  currentUser = null;
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-card').style.display = 'block';
+  document.getElementById('account-card').style.display = 'none';
+  document.getElementById('login-card').style.display = 'none';
+  showPage('password-page');
+}
+
+// ==================== DASHBOARD ====================
+function enterDashboard() {
+  document.getElementById('dash-username').textContent = currentUser.username;
+  document.getElementById('dash-greeting').textContent = `Welcome back, ${currentUser.username} ✦`;
+  renderRealmCards();
+  updateOverallProgress();
+  showPage('dashboard');
+}
+
+function renderRealmCards() {
+  const grid = document.getElementById('realms-grid');
+  const progress = getProgress(currentUser.email);
+  grid.innerHTML = '';
+  REALMS.forEach(realm => {
+    const realmProgress = progress[realm.id] || {};
+    const completed = REALMS[realm.id].tasks.filter((_, i) => realmProgress[i]?.completed).length;
+    const total = realm.tasks.length;
+    const pct = Math.round((completed / total) * 100);
+    const card = document.createElement('div');
+    card.className = 'realm-card';
+    card.onclick = () => openRealm(realm.id);
+    card.innerHTML = `
+      <span class="realm-card-icon">${realm.icon}</span>
+      <div class="realm-card-num">Realm ${realm.id + 1}</div>
+      <div class="realm-card-title">${realm.name}</div>
+      <div class="realm-card-goal">${realm.goal}</div>
+      <div class="realm-progress">
+        <div class="realm-progress-track"><div class="realm-progress-fill" style="width:${pct}%"></div></div>
+        <span class="realm-progress-label">${completed}/${total}</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function updateOverallProgress() {
+  const progress = getProgress(currentUser.email);
+  let total = 0, done = 0;
+  REALMS.forEach(realm => {
+    total += realm.tasks.length;
+    const rp = progress[realm.id] || {};
+    done += realm.tasks.filter((_, i) => rp[i]?.completed).length;
+  });
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('overall-bar').style.width = pct + '%';
+  document.getElementById('overall-pct').textContent = pct + '%';
+}
+
+// ==================== REALM VIEW ====================
+function openRealm(realmId) {
+  currentRealmId = realmId;
+  const realm = REALMS[realmId];
+  const progress = getProgress(currentUser.email);
+  const realmProgress = progress[realmId] || {};
+
+  document.getElementById('realm-header-title').textContent = `${realm.icon} ${realm.name}`;
+  document.getElementById('realm-icon').textContent = realm.icon;
+  document.getElementById('realm-title').textContent = realm.name;
+  document.getElementById('realm-goal').textContent = realm.goal;
+
+  const completed = realm.tasks.filter((_, i) => realmProgress[i]?.completed).length;
+  document.getElementById('realm-header-progress').textContent = `${completed} of ${realm.tasks.length} tasks complete`;
+
+  const list = document.getElementById('task-list');
+  list.innerHTML = '';
+
+  realm.tasks.forEach((task, i) => {
+    const taskData = realmProgress[i] || {};
+    const isCompleted = taskData.completed || false;
+    const savedReflection = taskData.reflection || '';
+    const savedOutput = taskData.output || '';
+
+    const card = document.createElement('div');
+    card.className = 'task-card' + (isCompleted ? ' completed' : '');
+    card.id = `task-card-${i}`;
+    card.innerHTML = `
+      <div class="task-card-header" onclick="toggleTask(${i})">
+        <div class="task-num">${i + 1}</div>
+        <div class="task-info">
+          <div class="task-title">${task.title}</div>
+          <div class="task-subtitle">${task.sub}</div>
+        </div>
+        <div class="task-check">${isCompleted ? '✦' : '○'}</div>
+      </div>
+      <div class="task-body" id="task-body-${i}">
+        <div class="task-section">
+          <div class="task-section-label">Task</div>
+          <div class="task-section-text">${task.desc}</div>
+        </div>
+        <div class="task-section">
+          <div class="task-section-label">Reflection Prompt</div>
+          <div class="task-section-text">${task.reflection}</div>
+          <textarea class="task-textarea" id="reflection-${i}" placeholder="Write your reflection here..." style="margin-top:10px;">${savedReflection}</textarea>
+        </div>
+        <div class="task-section">
+          <div class="task-section-label">Output: ${task.output}</div>
+          <textarea class="task-textarea" id="output-${i}" placeholder="Record your output, creation, or result here...">${savedOutput}</textarea>
+        </div>
+        <div class="task-actions">
+          <button class="btn-save" onclick="saveTask(${i})">Save Progress</button>
+          <button class="btn-complete" onclick="toggleComplete(${i})">${isCompleted ? '✦ Completed' : 'Mark Complete'}</button>
+        </div>
+        <div class="media-suggestion">✦ Media suggestions: ${realm.media}</div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  showPage('realm-view');
+}
+
+function toggleTask(i) {
+  const body = document.getElementById(`task-body-${i}`);
+  body.classList.toggle('open');
+}
+
+function saveTask(i) {
+  const reflection = document.getElementById(`reflection-${i}`).value;
+  const output = document.getElementById(`output-${i}`).value;
+  const progress = getProgress(currentUser.email);
+  if (!progress[currentRealmId]) progress[currentRealmId] = {};
+  if (!progress[currentRealmId][i]) progress[currentRealmId][i] = {};
+  progress[currentRealmId][i].reflection = reflection;
+  progress[currentRealmId][i].output = output;
+  saveProgress(currentUser.email, progress);
+  showToast('✦ Progress saved');
+}
+
+function toggleComplete(i) {
+  const progress = getProgress(currentUser.email);
+  if (!progress[currentRealmId]) progress[currentRealmId] = {};
+  if (!progress[currentRealmId][i]) progress[currentRealmId][i] = {};
+  const isNowComplete = !progress[currentRealmId][i].completed;
+  progress[currentRealmId][i].completed = isNowComplete;
+  // Also save current text
+  const reflection = document.getElementById(`reflection-${i}`)?.value || '';
+  const output = document.getElementById(`output-${i}`)?.value || '';
+  progress[currentRealmId][i].reflection = reflection;
+  progress[currentRealmId][i].output = output;
+  saveProgress(currentUser.email, progress);
+
+  const card = document.getElementById(`task-card-${i}`);
+  const check = card.querySelector('.task-check');
+  const btn = card.querySelector('.btn-complete');
+  if (isNowComplete) {
+    card.classList.add('completed');
+    check.textContent = '✦';
+    btn.textContent = '✦ Completed';
+    showToast('✦ Task complete! You\'re creating heaven on earth.');
+  } else {
+    card.classList.remove('completed');
+    check.textContent = '○';
+    btn.textContent = 'Mark Complete';
+  }
+  // Update header
+  const realm = REALMS[currentRealmId];
+  const realmProgress = progress[currentRealmId] || {};
+  const completed = realm.tasks.filter((_, idx) => realmProgress[idx]?.completed).length;
+  document.getElementById('realm-header-progress').textContent = `${completed} of ${realm.tasks.length} tasks complete`;
+  updateOverallProgress();
+}
+
+// ==================== SHOWCASE ====================
+function showShowcase() {
+  renderShowcase();
+  showPage('showcase-view');
+}
+
+function renderShowcase() {
+  const submissions = getShowcase();
+  const grid = document.getElementById('submissions-grid');
+  if (submissions.length === 0) {
+    grid.innerHTML = `<div style="text-align:center;padding:40px;color:var(--lavender);font-style:italic;opacity:0.6;">Be the first to share your creation with the cosmos ✦</div>`;
+    return;
+  }
+  grid.innerHTML = '';
+  submissions.slice().reverse().forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'submission-card';
+    card.innerHTML = `
+      <div class="submission-header">
+        <div class="submission-avatar">${s.username.charAt(0).toUpperCase()}</div>
+        <div>
+          <div class="submission-name">${s.username}</div>
+          <div class="submission-time">${new Date(s.time).toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'})}</div>
+        </div>
+      </div>
+      <div class="submission-text">${s.text}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function submitShowcase() {
+  const text = document.getElementById('showcase-input').value.trim();
+  if (!text) return;
+  const submissions = getShowcase();
+  submissions.push({ username: currentUser.username, text, time: Date.now() });
+  saveShowcase(submissions);
+  document.getElementById('showcase-input').value = '';
+  renderShowcase();
+  showToast('✦ Your creation has been shared with the cosmos');
+}
+
+// ==================== UTILS ====================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const tip = document.getElementById('copiedTip');
+    tip.textContent = `Copied: ${text}`;
+    tip.classList.add('show');
+    setTimeout(() => tip.classList.remove('show'), 1800);
+  });
+}
+
+
+// =====================================================
+// ONBOARDING & IMMERSIVE EXPERIENCE
+// =====================================================
+
+const REALM_SOUL_MESSAGES = [
+  {
+    icon: '🔥',
+    msg: 'Your purpose is not waiting for you somewhere in the future. It is already alive inside you, asking to be expressed. This realm will help you stop thinking about your projects and start building them.',
+    affirmation: '"I am already everything I need to create the life I came here to live."'
+  },
+  {
+    icon: '💞',
+    msg: 'Every relationship in your life is a mirror. This realm invites you to look honestly at what you have, tend what matters, and open yourself to the connections that will carry you further.',
+    affirmation: '"I attract relationships that match the love I am becoming."'
+  },
+  {
+    icon: '🎨',
+    msg: 'You were not born to consume. You were born to create. This realm is your permission slip to stop waiting until you feel ready, and start making something that is entirely, unapologetically yours.',
+    affirmation: '"My creativity is a gift to the world and I give it freely."'
+  },
+  {
+    icon: '🌍',
+    msg: 'Your light is not meant to shine only on yourself. This realm asks you to look up, look outward, and find the places where your unique presence can ripple into something greater.',
+    affirmation: '"My contribution matters. The world is better because I showed up."'
+  },
+  {
+    icon: '⚡',
+    msg: 'Everything you want to build in the outer world begins with who you are becoming in the inner one. This realm is the foundation beneath all other realms. Do not rush it.',
+    affirmation: '"I am disciplined, aligned, and becoming more of myself every day."'
+  },
+  {
+    icon: '💎',
+    msg: 'Abundance is not something you chase. It is something you become available to. This realm will help you clear the stories, see what you already have, and open the channel for more to flow.',
+    affirmation: '"I am worthy of abundance in all its forms. I receive it now."'
+  }
+];
+
+const BREATHING_MESSAGES = [
+  'Before you continue, take a breath. You are doing sacred work.',
+  'Rest here for a moment. Let what you just created settle in.',
+  'Your nervous system needs this pause. Breathe deeply before moving forward.',
+  'Creation takes energy. Honor yourself with a moment of stillness.',
+  'The work is not just in the doing. It is also in the being. Breathe.',
+];
+
+const CELEBRATION_MSGS = [
+  { icon: '✦', title: 'Beautiful.', msg: 'You just brought something real into the world.' },
+  { icon: '🌟', title: 'Yes.', msg: 'That is exactly what this quest is for.' },
+  { icon: '💎', title: 'Keep going.', msg: 'Every completed step builds your Heaven on Earth.' },
+  { icon: '🔥', title: 'Feel that.', msg: 'That is the energy of a soul in alignment.' },
+  { icon: '✨', title: 'Well done.', msg: 'Creation is an act of love. And you just did it.' },
+];
+
+const REALM_COMPLETE_MSGS = [
+  'You have journeyed through all of Work and Purpose. Let yourself sit with what you built here. Rest. Integrate. The next realm will be here when you are ready.',
+  'Relationships realm complete. You have done honest, tender work here. Take time to be with the people you love before moving on.',
+  'Creativity realm complete. Something that did not exist before now exists because of you. That is extraordinary. Rest and let it breathe.',
+  'Community realm complete. Your ripple is moving outward right now, even if you cannot see it yet. Trust it. Rest.',
+  'Self Mastery realm complete. You have faced yourself with courage. Now give yourself grace. Sleep, meditate, move your body before continuing.',
+  'Abundance realm complete. You have done the inner and outer work. Receive what is already on its way to you. Rest in that knowing.',
+];
+
+let obSelectedRealm = null;
+let sessionTaskCount = 0;
+let lastBreathTime = 0;
+
+function obNext(step) {
+  document.querySelectorAll('.ob-step').forEach(s => {
+    s.classList.remove('active');
+    s.style.display = 'none';
+  });
+  const next = document.getElementById('ob-step-' + step);
+  if (next) {
+    next.classList.add('active');
+    next.style.display = 'flex';
+    // Scroll to top of onboarding wrap smoothly
+    const wrap = document.querySelector('.ob-wrap');
+    if (wrap) wrap.scrollTop = 0;
+    window.scrollTo({top: 0, behavior: 'instant'});
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+  // ENDstant'});
+    document.documentElement.scrollTop = 0;
+  }
+}
+
+function obSelectRealm(realmId) {
+  obSelectedRealm = realmId;
+  const data = REALM_SOUL_MESSAGES[realmId];
+  const realm = REALMS[realmId];
+  document.getElementById('ob-selected-icon').textContent = data.icon;
+  document.getElementById('ob-selected-realm-name').textContent = realm.name;
+  document.getElementById('ob-selected-realm-msg').textContent = data.msg;
+  document.getElementById('ob-affirmation').textContent = data.affirmation;
+  obNext(4);
+}
+
+function obEnterRealm() {
+  // Save that onboarding is done
+  const progress = getProgress(currentUser.email);
+  progress._onboarded = true;
+  if (document.getElementById('ob-intention').value.trim()) {
+    progress._intention = document.getElementById('ob-intention').value.trim();
+  }
+  saveProgress(currentUser.email, progress);
+  openRealm(obSelectedRealm);
+}
+
+// Start breathing animation cycling
+function startBreathAnimation(textEl) {
+  const phases = [
+    { text: 'Breathe In',  duration: 4000 },
+    { text: 'Hold',        duration: 2000 },
+    { text: 'Breathe Out', duration: 4000 },
+    { text: 'Rest',        duration: 2000 },
+  ];
+  let i = 0;
+  function cycle() {
+    if (textEl) textEl.textContent = phases[i % phases.length].text;
+    i++;
+    return setTimeout(cycle, phases[(i-1) % phases.length].duration);
+  }
+  return cycle();
+}
+
+let breathTimer1 = null;
+window.addEventListener('DOMContentLoaded', () => {
+  const t = document.getElementById('breathText1');
+  if (t) breathTimer1 = startBreathAnimation(t);
+});
+
+// Show breathing overlay
+function showBreath(msg) {
+  const overlay = document.getElementById('breathOverlay');
+  const msgEl = document.getElementById('breathMessage');
+  if (msgEl) msgEl.textContent = msg || BREATHING_MESSAGES[Math.floor(Math.random() * BREATHING_MESSAGES.length)];
+  overlay.classList.add('show');
+  const t = document.getElementById('breathTextLarge');
+  if (t) startBreathAnimation(t);
+  lastBreathTime = Date.now();
+}
+
+function closeBreath() {
+  document.getElementById('breathOverlay').classList.remove('show');
+}
+
+// Show celebration overlay
+let celebrateCallback = null;
+function showCelebrate(callback) {
+  const data = CELEBRATION_MSGS[Math.floor(Math.random() * CELEBRATION_MSGS.length)];
+  document.getElementById('celebrateIcon').textContent = data.icon;
+  document.getElementById('celebrateTitle').textContent = data.title;
+  document.getElementById('celebrateMsg').textContent = data.msg;
+  document.getElementById('celebrateOverlay').classList.add('show');
+  celebrateCallback = callback || null;
+
+  // Also check if we need a breath reminder
+  sessionTaskCount++;
+  if (sessionTaskCount > 0 && sessionTaskCount % 3 === 0) {
+    celebrateCallback = () => {
+      document.getElementById('celebrateOverlay').classList.remove('show');
+      setTimeout(() => showBreath(), 300);
+    };
+  }
+}
+
+function closeCelebrate() {
+  document.getElementById('celebrateOverlay').classList.remove('show');
+  if (celebrateCallback) { celebrateCallback(); celebrateCallback = null; }
+}
+
+// Show realm complete
+function showRealmComplete(realmId) {
+  const realm = REALMS[realmId];
+  document.getElementById('realmCompleteIcon').textContent = realm.icon;
+  document.getElementById('realmCompleteTitle').textContent = realm.name + ' Complete.';
+  document.getElementById('realmCompleteMsg').textContent = REALM_COMPLETE_MSGS[realmId];
+  document.getElementById('realmCompleteOverlay').classList.add('show');
+}
+
+function closeRealmComplete() {
+  document.getElementById('realmCompleteOverlay').classList.remove('show');
+  showPage('dashboard');
+}
+
+// ---- OVERRIDE enterDashboard to check onboarding ----
+const _origEnterDash = enterDashboard;
+window.enterDashboard = function() {
+  sessionStorage.setItem('eos_session', JSON.stringify(currentUser));
+  const progress = getProgress(currentUser.email);
+
+  if (!progress._onboarded) {
+    // First time: show onboarding
+    document.getElementById('dash-username').textContent = currentUser.username;
+    document.getElementById('dash-greeting').textContent = `Welcome, ${currentUser.username} ✦`;
+    document.getElementById('ob-welcome-name').textContent = `Welcome, ${currentUser.username}.`;
+    renderRealmCards();
+    updateOverallProgress();
+    showPage('onboarding');
+    obNext(1);
+  } else {
+    // Returning: show welcome back message then dashboard
+    _origEnterDash();
+    showReturnMessage();
+  }
+};
+
+function showReturnMessage() {
+  const progress = getProgress(currentUser.email);
+  // Count total completed
+  let done = 0;
+  REALMS.forEach(r => {
+    const rp = progress[r.id] || {};
+    done += r.tasks.filter((_,i) => rp[i]?.completed).length;
+  });
+  const msgs = [
+    `Welcome back, ${currentUser.username}. Your journey continues. ✦`,
+    `You showed up again. That is the whole practice. ✦`,
+    `Heaven on Earth is built one return at a time. Welcome back. ✦`,
+    `${done} steps complete. Keep going, ${currentUser.username}. ✦`,
+  ];
+  const msg = msgs[Math.floor(Math.random() * msgs.length)];
+  document.getElementById('dash-greeting').textContent = msg;
+}
+
+// ---- OVERRIDE toggleComplete to add celebrations + realm completion check ----
+const _origToggleComplete = toggleComplete;
+window.toggleComplete = function(i) {
+  const progress = getProgress(currentUser.email);
+  const wasComplete = progress[currentRealmId]?.[i]?.completed || false;
+  _origToggleComplete(i);
+
+  const newProgress = getProgress(currentUser.email);
+  const isNowComplete = newProgress[currentRealmId]?.[i]?.completed || false;
+
+  if (!wasComplete && isNowComplete) {
+    // Check if entire realm is now complete
+    const realm = REALMS[currentRealmId];
+    const rp = newProgress[currentRealmId] || {};
+    const allDone = realm.tasks.every((_, idx) => rp[idx]?.completed);
+
+    if (allDone) {
+      setTimeout(() => showRealmComplete(currentRealmId), 400);
+    } else {
+      showCelebrate();
+    }
+  }
+};
+
+
+// ==================== AUTO LOGIN ====================
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = sessionStorage.getItem('eos_session');
+  if (saved) {
+    try {
+      const s = JSON.parse(saved);
+      const users = getUsers();
+      if (users[s.email]) {
+        currentUser = s;
+        enterDashboard();
+      }
+    } catch(e) {}
+  }
+});
+
+const _origEnter = enterDashboard;
+window.enterDashboard = function() {
+  sessionStorage.setItem('eos_session', JSON.stringify(currentUser));
+  _origEnter();
+};
+
+const _origLogout = logout;
+window.logout = function() {
+  sessionStorage.removeItem('eos_session');
+  _origLogout();
+};
+</script>
+
+
+<!-- Hidden YouTube Players -->
+<div id="yt-container">
+  <div id="yt-landing"></div>
+  <div id="yt-journey"></div>
+  <div id="yt-focus"></div>
+  <div id="yt-affirm"></div>
+  <div id="yt-healing"></div>
+</div>
+
+<!-- Music Widget -->
+<div class="music-widget" id="musicWidget">
+  <div class="mw-play" id="mwPlayBtn" onclick="mwToggle()">▶</div>
+  <div class="mw-title" id="mwTitle">Zen Ambience</div>
+  <div class="mw-wave paused" id="mwWave">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="mw-menu-btn" onclick="mwOpenMenu()">♫</div>
+  <div class="mw-tracklist" id="mwTracklist">
+    <div class="mw-track-btn playing" id="mwt0" onclick="mwSelect(0)">Ethereal Landing</div>
+    <div class="mw-track-btn" id="mwt1" onclick="mwSelect(1)">Inner Journey</div>
+    <div class="mw-track-btn" id="mwt2" onclick="mwSelect(2)">Deep Focus</div>
+    <div class="mw-track-btn" id="mwt3" onclick="mwSelect(3)">Affirmations</div>
+    <div class="mw-track-btn" id="mwt4" onclick="mwSelect(4)">Sound Healing</div>
+  </div>
+</div>
+
+<script>
+// ======= YOUTUBE MUSIC PLAYER =======
+const YT_IDS = [
+  { id: 'QSbgIPyXh7s', name: 'Ethereal Landing',  zone: 'landing'  },
+  { id: '3IPWFAU6yPM', name: 'Inner Journey',      zone: 'journey'  },
+  { id: 'PnjadHkzim8', name: 'Deep Focus',         zone: 'focus'    },
+  { id: '5tKtG_zGP5E', name: 'Affirmations',       zone: 'affirm'   },
+  { id: 'Si-6T3HMdj4', name: 'Sound Healing',      zone: 'healing'  },
+];
+
+let mwPlaying = false;
+let mwCurrentIdx = 0;
+let mwMenuOpen = false;
+let ytPlayers = {};
+let ytReady = false;
+
+// Load YouTube IFrame API
+(function() {
+  const tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+})();
+
+window.onYouTubeIframeAPIReady = function() {
+  ytReady = true;
+  YT_IDS.forEach((track, i) => {
+    ytPlayers[i] = new YT.Player('yt-' + track.zone, {
+      height: '1', width: '1',
+      videoId: track.id,
+      playerVars: {
+        autoplay: 0,
+        loop: 1,
+        playlist: track.id,
+        controls: 0,
+        disablekb: 1,
+        fs: 0,
+        modestbranding: 1,
+      },
+      events: {
+        onReady: function(e) {
+          e.target.setVolume(8); // Very low — 8 out of 100
+        },
+        onStateChange: function(e) {
+          if (e.data === YT.PlayerState.ENDED) {
+            e.target.seekTo(0);
+            e.target.playVideo();
+          }
+        }
+      }
+    });
+  });
+};
+
+function mwToggle() {
+  if (!ytReady) { mwToast('Music loading, try again in a second...'); return; }
+  if (mwPlaying) {
+    mwPause();
+  } else {
+    mwPlayTrack(mwCurrentIdx);
+  }
+}
+
+function mwPlayTrack(idx) {
+  // Pause all others first
+  YT_IDS.forEach((_, i) => {
+    if (ytPlayers[i] && i !== idx) {
+      try { ytPlayers[i].pauseVideo(); } catch(e){}
+    }
+  });
+  if (ytPlayers[idx]) {
+    try {
+      ytPlayers[idx].setVolume(8);
+      ytPlayers[idx].playVideo();
+      mwPlaying = true;
+      document.getElementById('mwPlayBtn').textContent = '⏸';
+      document.getElementById('mwWave').classList.remove('paused');
+      document.getElementById('mwTitle').textContent = YT_IDS[idx].name;
+    } catch(e) { console.log('YT play error:', e); }
+  }
+}
+
+function mwPause() {
+  if (ytPlayers[mwCurrentIdx]) {
+    try { ytPlayers[mwCurrentIdx].pauseVideo(); } catch(e){}
+  }
+  mwPlaying = false;
+  document.getElementById('mwPlayBtn').textContent = '▶';
+  document.getElementById('mwWave').classList.add('paused');
+}
+
+function mwSelect(idx) {
+  mwCurrentIdx = idx;
+  document.querySelectorAll('.mw-track-btn').forEach((el, i) => {
+    el.classList.toggle('playing', i === idx);
+  });
+  document.getElementById('mwTitle').textContent = YT_IDS[idx].name;
+  if (mwPlaying) { mwPlayTrack(idx); }
+  else { mwPlayTrack(idx); }
+  // Close menu after selecting
+  setTimeout(() => { mwMenuOpen = true; mwOpenMenu(); }, 400);
+}
+
+function mwOpenMenu() {
+  mwMenuOpen = !mwMenuOpen;
+  const widget = document.getElementById('musicWidget');
+  const list = document.getElementById('mwTracklist');
+  list.classList.toggle('open', mwMenuOpen);
+  widget.classList.toggle('expanded', mwMenuOpen);
+}
+
+// Auto-switch music based on page shown
+const origShowPageMusic = showPage;
+window.showPage = function(id) {
+  origShowPageMusic(id);
+  if (!ytReady) return;
+  if (id === 'landing') {
+    if (mwCurrentIdx !== 0) { mwCurrentIdx = 0; if (mwPlaying) mwPlayTrack(0); }
+  } else if (id === 'onboarding') {
+    if (mwCurrentIdx !== 3) { mwCurrentIdx = 3; if (mwPlaying) mwPlayTrack(3); }
+  } else if (id === 'dashboard') {
+    if (mwCurrentIdx !== 1) { mwCurrentIdx = 1; if (mwPlaying) mwPlayTrack(1); }
+  } else if (id === 'realm-view') {
+    if (mwCurrentIdx !== 1) { mwCurrentIdx = 1; if (mwPlaying) mwPlayTrack(1); }
+  }
+};
+
+function mwToast(msg) {
+  const t = document.getElementById('toast');
+  if (t) { t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
+}
+</script>
+
+</body>
+</html>
